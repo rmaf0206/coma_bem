@@ -29,6 +29,35 @@ class DatabaseHelper {
         usu_tx_senha TEXT NOT NULL
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE restaurante (
+        res_id_restaurante INTEGER PRIMARY KEY AUTOINCREMENT,
+        res_nm_restaurante TEXT NOT NULL,
+        res_nu_latitude TEXT NOT NULL,
+        res_nu_longitude TEXT NOT NULL,
+        res_ds_tipo_culinaria TEXT NOT NULL
+      )
+      ''');
+
+    await db.execute('''
+      CREATE TABLE prato (
+        pra_id_prato INTEGER PRIMARY KEY AUTOINCREMENT,
+        pra_nm_prato TEXT NOT NULL,
+        pra_im_foto NULL,
+        pra_id_restaurante INT NOT NULL
+      )
+      ''');
+
+    await db.execute('''
+      CREATE TABLE avaliacao (
+        avl_id_avaliacao INTEGER PRIMARY KEY AUTOINCREMENT,
+        avl_nu_ranking INT NOT NULL,
+        avl_tx_recomendacao TEXT NOT NULL,
+        avl_id_prato INT NOT NULL,
+        avl_id_usuario INT NOT NULL
+      )
+      ''');
   }
 
   Future<Map<String, dynamic>?> autenticarUsuario(String email, String senha) async {
