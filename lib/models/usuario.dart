@@ -20,5 +20,11 @@ class Usuario {
   }
   set senha (String senha){
     _senha = senha;
+  
+  if (senha.length >= 6) {
+  print('Sua senha foi salva com sucesso.');
+  } else {
+  print('Não foi possivel salvar sua senha');
+  }
   }
 }

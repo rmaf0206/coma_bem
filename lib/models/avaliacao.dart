@@ -16,9 +16,13 @@ class Avaliacao {
   set ranking(int nota) {
     if (nota >= 1 && nota <= 5) {
       _ranking = nota;
-    } else {
-      print('Erro: A nota deve estar entre 1 e 5.');
-    }
+      print('Nota $nota salva com sucesso!');
+    } else if (nota > 5){
+      print('Aviso: A nota máxima permitida é 5.');
+  } else {
+    _ranking = 1;
+    print('Aviso: A nota mínima permitida é 1.');
+  }
   }
 
   set recomendacao(String texto) => _recomendacao = texto;
