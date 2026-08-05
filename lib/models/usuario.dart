@@ -1,4 +1,4 @@
-class Usuario {
+abstract class Usuario {
   int _idUsuario;
   String _nomeUsuario;
   String _email;
@@ -27,4 +27,7 @@ class Usuario {
   print('Não foi possivel salvar sua senha');
   }
   }
+
+  void exibirMenu();
+  void gerenciarConta();
 }
