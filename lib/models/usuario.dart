@@ -4,30 +4,35 @@ abstract class Usuario {
   String _email;
   String _senha;
 
-  Usuario(this._idUsuario, this._nomeUsuario, this._email, this._senha);
+  Usuario(
+    this._idUsuario,
+    this._nomeUsuario,
+    this._email,
+    this._senha,
+  );
 
   int get idUsuario => _idUsuario;
+
   String get nomeUsuario => _nomeUsuario;
+
   String get email => _email;
+
   String get senha => _senha;
 
-  set nomeUsuario(String nome) {
-    _nomeUsuario = nome;
-  }
+  set nomeUsuario(String nome) => _nomeUsuario = nome;
 
-  set email (String email){
-    _email = email;
-  }
-  set senha (String senha){
-    _senha = senha;
-  
-  if (senha.length >= 6) {
-  print('Sua senha foi salva com sucesso.');
-  } else {
-  print('Não foi possivel salvar sua senha');
-  }
+  set email(String email) => _email = email;
+
+  set senha(String senha) {
+    if (senha.length >= 6) {
+      _senha = senha;
+      print('Sua senha foi salva com sucesso.');
+    } else {
+      print('Não foi possível salvar sua senha.');
+    }
   }
 
   void exibirMenu();
+
   void gerenciarConta();
 }

@@ -28,10 +28,10 @@ void main() {
 
         if (nome != null && nome.isNotEmpty) {
           Cliente novoCliente = Cliente(
-            id: usuariosCadastrados.length + 1,
-            nome: nome,
-            email: '$nome@email.com',
-            senha: '123',
+            usuariosCadastrados.length + 1,
+            nome,
+            '$nome@email.com',
+            '123',
           );
 
           usuariosCadastrados.add(novoCliente);
@@ -48,14 +48,16 @@ void main() {
 
         if (nomeAdmin != null && nomeAdmin.isNotEmpty) {
           Administrador novoAdmin = Administrador(
-            id: usuariosCadastrados.length + 1,
-            nome: nomeAdmin,
-            email: '$nomeAdmin@admin.com',
-            senha: 'admin123',
+            usuariosCadastrados.length + 1,
+            nomeAdmin,
+            '$nomeAdmin@admin.com',
+            'admin123',
           );
 
           usuariosCadastrados.add(novoAdmin);
-          print('Administrador "$nomeAdmin" cadastrado com sucesso!');
+          print(
+            'Administrador "$nomeAdmin" cadastrado com sucesso!',
+          );
         } else {
           print('Nome inválido!');
         }
@@ -68,10 +70,10 @@ void main() {
           print('Nenhum usuário cadastrado.');
         } else {
           for (Usuario usuario in usuariosCadastrados) {
-            print('\nID: ${usuario.id}');
-            print('Nome: ${usuario.nome}');
+            print('\nID: ${usuario.idUsuario}');
+            print('Nome: ${usuario.nomeUsuario}');
             print('E-mail: ${usuario.email}');
-            usuario.exibirMenu(); 
+            usuario.exibirMenu();
             print('-----------------------------');
           }
         }
