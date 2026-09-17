@@ -7,12 +7,12 @@ class BotaoCustomizado extends StatelessWidget {
   final IconData? icone;
 
   const BotaoCustomizado({
-    Key? key,
+    super.key,
     required this.texto,
     required this.onPressed,
     this.contorno = false,
     this.icone,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,19 +43,22 @@ class BotaoCustomizado extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
           children: [
             if (icone != null) ...[
               Icon(
                 icone,
-                color: contorno ? corPrincipal : Colors.white,
+                color: contorno
+                    ? corPrincipal
+                    : Colors.white,
               ),
               const SizedBox(width: 8),
             ],
             Text(
               texto,
               style: TextStyle(
-                color: contorno ? corPrincipal : Colors.white,
+                color: contorno
+                    ? corPrincipal
+                    : Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

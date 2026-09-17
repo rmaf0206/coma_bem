@@ -19,16 +19,25 @@ abstract class Usuario {
 
   String get senha => _senha;
 
-  set nomeUsuario(String nome) => _nomeUsuario = nome;
+  set nomeUsuario(String nome) {
+    _nomeUsuario = nome;
+  }
 
-  set email(String email) => _email = email;
+  set email(String email) {
+    _email = email;
+  }
 
   set senha(String senha) {
     if (senha.length >= 6) {
       _senha = senha;
-      print('Sua senha foi salva com sucesso.');
+
+      print(
+        'Sua senha foi salva com sucesso.',
+      );
     } else {
-      print('Não foi possível salvar sua senha.');
+      print(
+        'Não foi possível salvar sua senha.',
+      );
     }
   }
 

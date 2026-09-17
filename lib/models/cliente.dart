@@ -1,10 +1,21 @@
 import 'usuario.dart';
 
 class Cliente extends Usuario {
-  Cliente(super.idUsuario, super.nomeUsuario, super.email, super.senha);
+  Cliente(
+    super.idUsuario,
+    super.nomeUsuario,
+    super.email,
+    super.senha,
+  );
 
-  void avaliarPrato(String prato, int nota) {
-    print('O cliente $nomeUsuario avaliou o prato $prato com nota $nota.');
+  void avaliarPrato(
+    String prato,
+    int nota,
+  ) {
+    print(
+      'O cliente $nomeUsuario avaliou '
+      'o prato $prato com nota $nota.',
+    );
   }
 
   @override
@@ -16,6 +27,9 @@ class Cliente extends Usuario {
 
   @override
   void gerenciarConta() {
-    print('Gerenciando forma de pagamento e endereço de entrega');
+    print(
+      'Gerenciando forma de pagamento '
+      'e endereço de entrega',
+    );
   }
 }

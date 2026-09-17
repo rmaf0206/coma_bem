@@ -1,7 +1,12 @@
 import 'usuario.dart';
 
 class Administrador extends Usuario {
-  Administrador(super.idUsuario, super.nomeUsuario, super.email, super.senha);
+  Administrador(
+    super.idUsuario,
+    super.nomeUsuario,
+    super.email,
+    super.senha,
+  );
 
   @override
   void exibirMenu() {
@@ -12,6 +17,8 @@ class Administrador extends Usuario {
 
   @override
   void gerenciarConta() {
-    print('Gerenciando permissões do sistema');
+    print(
+      'Gerenciando permissões do sistema',
+    );
   }
 }
