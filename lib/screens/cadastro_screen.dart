@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
@@ -58,6 +57,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
           content: Text(
             'Serviço de localização desativado.',
           ),
+          backgroundColor: Colors.red,
         ),
       );
       return;
@@ -75,6 +75,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
             content: Text(
               'Permissão de localização negada.',
             ),
+            backgroundColor: Colors.red,
           ),
         );
         return;
@@ -87,6 +88,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
           content: Text(
             'Permissão de localização negada permanentemente.',
           ),
+          backgroundColor: Colors.red,
         ),
       );
       return;
@@ -104,33 +106,94 @@ class _CadastroScreenState extends State<CadastroScreen> {
   }
 
   void _salvarCadastro() async {
-    Map<String, dynamic> dadosRestaurante = {
-      'res_nm_restaurante': _nomeController.text,
-      'res_ds_tipo_culinaria': _culinariaController.text,
-      'res_nu_latitude': _latitude,
-      'res_nu_longitude': _longitude,
-    };
-
-    await DatabaseHelper.instancia.inserirDados(
-      'restaurante',
-      dadosRestaurante,
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Restaurante cadastrado!',
+    // Verifica os campos obrigatórios
+    if (_nomeController.text.isEmpty ||
+        _culinariaController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Por favor, preencha os campos obrigatórios!',
+          ),
+          backgroundColor: Colors.red,
         ),
-      ),
-    );
+      );
+      return;
+    }
 
-    Navigator.pop(context);
+    // Verifica se o Ranking foi preenchido
+    if (_rankingController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'O Ranking deve ser uma nota de 1 a 5!',
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Converte o Ranking de texto para número
+      int ranking = int.parse(_rankingController.text);
+
+      // Verifica se o Ranking está entre 1 e 5
+      if (ranking < 1 || ranking > 5) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'O Ranking deve ser uma nota de 1 a 5!',
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // Dados do restaurante
+      Map<String, dynamic> dadosRestaurante = {
+        'res_nm_restaurante': _nomeController.text,
+        'res_ds_tipo_culinaria': _culinariaController.text,
+        'res_nu_latitude': _latitude,
+        'res_nu_longitude': _longitude,
+      };
+
+      await DatabaseHelper.instancia.inserirDados(
+        'restaurante',
+        dadosRestaurante,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Restaurante cadastrado com sucesso!',
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      Navigator.pop(context);
+    } catch (erro) {
+      print(
+        'DEBUG - Erro ao salvar no SQLite: $erro',
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Ocorreu um erro inesperado ao salvar.',
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
       appBar: AppBar(
         title: Text(
           'Novo Cadastro',
@@ -146,26 +209,33 @@ class _CadastroScreenState extends State<CadastroScreen> {
         ),
         elevation: 0,
       ),
+
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
+            // Nome do restaurante
             CampoFormularioCustomizando(
               titulo: 'Nome do Restaurante',
               controlador: _nomeController,
             ),
 
+            // Tipo de culinária
             CampoFormularioCustomizando(
               titulo: 'Tipo de Culinária',
               controlador: _culinariaController,
             ),
 
+            // Nome do prato
             CampoFormularioCustomizando(
               titulo: 'Nome do Prato',
               controlador: _nomePratoController,
             ),
 
+            // Ranking
             CampoFormularioCustomizando(
               titulo: 'Ranking (1 a 5)',
               controlador: _rankingController,
@@ -174,18 +244,22 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
             SizedBox(height: 12),
 
+            // Recomendações
             TextField(
               controller: _recomendacoesController,
               maxLines: 3,
+
               decoration: InputDecoration(
                 labelText: 'Recomendações / Sobre',
                 hintText: 'Ambiente aconchegante...',
                 filled: true,
                 fillColor: Colors.grey[100],
+
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
                 ),
+
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 12,
@@ -195,6 +269,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
             SizedBox(height: 20),
 
+            // Foto
             Text(
               'Foto do Prato:',
               style: TextStyle(
@@ -209,16 +284,21 @@ class _CadastroScreenState extends State<CadastroScreen> {
             Container(
               height: 180,
               width: double.infinity,
+
               decoration: BoxDecoration(
                 color: Colors.grey[100],
+
                 borderRadius: BorderRadius.circular(8),
+
                 border: Border.all(
                   color: Colors.grey[300]!,
                 ),
               ),
+
               child: _fotoPrato != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(8),
+
                       child: Image.file(
                         _fotoPrato!,
                         fit: BoxFit.cover,
@@ -237,6 +317,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
             SizedBox(height: 10),
 
+            // Botão para tirar foto
             BotaoCustomizado(
               texto: 'Tirar Foto do Prato',
               onPressed: _tirarFoto,
@@ -246,6 +327,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
             SizedBox(height: 20),
 
+            // Localização
             Text(
               'Localização GPS:',
               style: TextStyle(
@@ -257,6 +339,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
             SizedBox(height: 10),
 
+            // Botão localização
             BotaoCustomizado(
               texto: 'Obter Localização',
               onPressed: _pegarLocalizacao,
@@ -264,6 +347,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
               icone: Icons.location_on,
             ),
 
+            // Exibe localização
             if (_latitude.isNotEmpty &&
                 _longitude.isNotEmpty) ...[
               SizedBox(height: 8),
@@ -281,6 +365,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
             SizedBox(height: 30),
 
+            // Salvar
             BotaoCustomizado(
               texto: 'Salvar Cadastro',
               onPressed: _salvarCadastro,
